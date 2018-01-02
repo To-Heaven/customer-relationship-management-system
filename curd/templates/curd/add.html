@@ -1,0 +1,11 @@
+{% extends 'curd/base.html' %}
+{% load popup %}
+
+{% block title %}添加页面{% endblock title %}
+
+{% block body %}
+    <div class="container">
+        <h1>添加数据页面</h1>
+        {% form_popup form config_obj.model_class %}
+    </div>
+{% endblock body %}

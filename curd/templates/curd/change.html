@@ -1,0 +1,11 @@
+{% extends 'curd/base.html' %}
+{% load popup %}
+
+{% block title %} 修改页面 {% endblock title %}
+
+{% block body %}
+    <div class="container"><h2>修改信息界面</h2>
+        {% form_popup form model_class %}
+    </div>
+{% endblock body %}
+

@@ -1,0 +1,109 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <ul id="course">
+        {% for class in student.class_list.all %}
+            <li course_id="{{ class.course.id }}" student_id="{{ student.id }}">
+                <h2>{{ class.course }}({{ class.semester }})</h2></li>
+        {% endfor %}
+    </ul>
+    <div id="container" style="min-width:400px;height:400px"></div>
+</div>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="{% static 'plugins/highcharts/highcharts.js' %}"></script>
+<script>
+    $(function () {
+        $("#course li").click(function () {
+            $.ajax({
+                url: '/curd/crm/student/chart/',
+                type: 'get',
+                data: {
+                    "course_id": $(this).attr('course_id'),
+                    "student_id": $(this).attr('student_id')
+                },
+                success: function (data) {
+                    var config = {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: '成绩分布图'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            labels: {
+                                rotation: -45,
+                                style: {
+                                    fontSize: '13px',
+                                    fontFamily: 'Verdana, sans-serif'
+                                }
+                            }
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: '分数'
+                            }
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        tooltip: {
+                            pointFormat: '分数: <b>{point.y}</b>'
+                        },
+                        series: [{
+                            name: '总人口',
+                            data: [
+                                ['上海', 24.25],
+                                ['卡拉奇', 23.50],
+                                ['北京', 21.51],
+                                ['德里', 16.78],
+                                ['拉各斯', 16.06],
+                                ['天津', 15.20],
+                                ['伊斯坦布尔', 14.16],
+                                ['东京', 13.51],
+                                ['广州', 13.08],
+                                ['孟买', 12.44],
+                                ['莫斯科', 12.19],
+                                ['圣保罗', 12.03],
+                                ['深圳', 10.46],
+                                ['雅加达', 10.07],
+                                ['拉合尔', 10.05],
+                                ['首尔', 9.99],
+                                ['武汉', 9.78],
+                                ['金沙萨', 9.73],
+                                ['开罗', 9.27],
+                                ['墨西哥', 8.87]
+                            ],
+                            dataLabels: {
+                                enabled: true,
+                                rotation: -90,
+                                color: '#FFFFFF',
+                                align: 'right',
+                                format: '{point.y:.1f}', // one decimal
+                                y: 10, // 10 pixels down from the top
+                                style: {
+                                    fontSize: '13px',
+                                    fontFamily: 'Verdana, sans-serif'
+                                }
+                            }
+                        }]
+                    };
+                    $('#container').highcharts(config);
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>
